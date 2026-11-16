@@ -17,7 +17,6 @@ const src = `https://tally.so/embed/${formId}?alignLeft=1&hideTitle=1&transparen
     <div class="tally card">
       <iframe
         data-tally-src={src}
-        src={src}
         loading="lazy"
         width="100%"
         height={minHeight}
@@ -26,7 +25,21 @@ const src = `https://tally.so/embed/${formId}?alignLeft=1&hideTitle=1&transparen
         marginwidth="0"
         title={title}
       />
-      <script is:inline async src="https://tally.so/widgets/embed.js" />
+      <script is:inline>
+        // Tally's own loader: it sets the iframe src and resizes the frame to fit the form,
+        // so visitors never scroll inside the form. Falls back to plain loading if blocked.
+        (function () {
+          var d = document, w = "https://tally.so/widgets/embed.js";
+          var v = function () {
+            if (typeof Tally !== "undefined") Tally.loadEmbeds();
+            else d.querySelectorAll("iframe[data-tally-src]:not([src])").forEach(function (e) { e.src = e.dataset.tallySrc; });
+          };
+          if (typeof Tally !== "undefined") v();
+          else if (d.querySelector('script[src="' + w + '"]') == null) {
+            var s = d.createElement("script"); s.src = w; s.onload = v; s.onerror = v; d.body.appendChild(s);
+          }
+        })();
+      </script>
       <noscript>
         <p>
           <a href={`https://tally.so/r/${formId}`}>Open the form in a new page</a>.
