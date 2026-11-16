@@ -85,6 +85,6 @@ Every site button still says "Book a free call" and goes to /book/.
 
 ## Before showing it to anyone
 
-- Replace the placeholder story on Home (`pages/home.md`) and About (`pages/about.md`).
+- Review the founder story on Home (`pages/home.md`) and About (`pages/about.md`). About has an optional spot (an HTML comment, invisible on the page) for one real moment in your own words.
 - Phone-check the five free-service numbers. Ontario Health atHome's site now lists 1-833-515-1234; 310-2222 is shown as the alternative. Confirm both still connect.
 - Privacy and Terms are marked DRAFT pending lawyer review. Leave the banner until they are reviewed.

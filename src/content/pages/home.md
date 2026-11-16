@@ -16,8 +16,6 @@ freeServicesHeading: We work alongside the free services
 freeServicesText: Halton has good free navigation services, and we'll make sure you use every one your family is entitled to. Some families only need those, and if that's you, we'll say so. Where we help is the private decisions and the transitions the public system isn't set up to manage end to end.
 ---
 
-PLACEHOLDER: Replace with the founder story, 3 to 5 sentences.
+I've lived in Halton since 2014, and my family and extended family have been through this more than once. Someone you love suddenly needs more help, and nobody hands you a map: assessments, waitlists, private options, paperwork, and family members with different ideas, usually all at once.
 
-When Brian's own family had to arrange care for a parent, he learned the hard way how many pieces there are: assessments, waitlists, private options, paperwork, and family members with different ideas. Nobody hands you a map.
-
-Family Wayfinder isn't a nursing or social work service. It was started by someone who has been through it, has done the homework since, and now helps other families get to a clear plan faster and with less stress.
+Family Wayfinder isn't a nursing or social work service. I started it because I've been on your side of the table, have done the homework since, and want other families to get to a clear plan faster and with less stress.
