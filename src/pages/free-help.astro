@@ -1,0 +1,81 @@
+---
+import { getEntry, getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import FreeServiceCard from "../components/FreeServiceCard.astro";
+import { site, signupReady } from "../site.config";
+
+const page = await getEntry("pages", "free-help");
+if (!page) throw new Error("Missing src/content/pages/free-help.md");
+const p = page.data;
+const listings = (await getCollection("freeServices")).sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout title={p.title} description={p.description}>
+  <section class="section">
+    <div class="container">
+      <div class="prose">
+        <h1>{p.heading}</h1>
+        <p class="lead">{p.intro}</p>
+        <div class="callout callout-alert" role="note">
+          <p><strong>If someone is in immediate danger, call 911.</strong></p>
+        </div>
+        <p class="small muted">
+          Family Wayfinder is independent and is not affiliated with any of these organizations. Listings are for information
+          only.
+        </p>
+      </div>
+
+      <h2 class="visually-hidden">Free services</h2>
+      <div class="grid grid-2 listings">
+        {listings.map((entry) => <FreeServiceCard entry={entry} />)}
+      </div>
+    </div>
+  </section>
+
+  <section class="section band-mist" aria-labelledby="guides-heading">
+    <div class="container"><div class="prose">
+      <h2 id="guides-heading">Free guides</h2>
+      <div class="card">
+        <h3><a href="/guides/snow-help/">Snow help for seniors in Halton</a></h3>
+        <p>
+          What each town's windrow program covers, what it costs and who qualifies, plus community and volunteer options for
+          driveways and walkways, and how to hire a private service safely.
+        </p>
+        <a href="/guides/snow-help/" class="btn btn-secondary">Read the snow help guide</a>
+      </div>
+    </div></div>
+  </section>
+
+  <section class="section band-sand" aria-labelledby="directory-heading">
+    <div class="container"><div class="prose">
+      <h2 id="directory-heading">A Halton directory is coming</h2>
+      <p>
+        We're building a directory of senior services in {site.serviceArea.join(", ")}, organized by city and type of
+        service. Leave your email and we'll let you know when it's ready. One email, no spam.
+      </p>
+      {
+        signupReady ? (
+          <a href={site.signupUrl} class="btn btn-primary" rel="noopener">
+            Let me know when it launches
+          </a>
+        ) : (
+          <p class="muted">Signup opening soon.</p>
+        )
+      }
+    </div></div>
+  </section>
+
+  <section class="section" aria-labelledby="help-heading">
+    <div class="container"><div class="prose">
+      <h2 id="help-heading">Want help putting it together?</h2>
+      <p>
+        Free services are a great start. If you're facing a private decision, a hospital discharge or a family that
+        can't agree, a <a href="/book/">free 15-minute fit call</a> is the easiest way to see if we can help.
+      </p>
+    </div></div>
+  </section>
+</BaseLayout>
+
+<style>
+  .listings { margin-top: var(--space-4); }
+</style>

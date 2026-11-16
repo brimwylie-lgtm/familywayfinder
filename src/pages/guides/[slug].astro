@@ -1,0 +1,98 @@
+---
+// Renders every guide in src/content/guides/ at /guides/<file-name>/.
+import { getCollection, render } from "astro:content";
+import type { CollectionEntry } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import TallyEmbed from "../../components/TallyEmbed.astro";
+import { site } from "../../site.config";
+
+export async function getStaticPaths() {
+  const guides = await getCollection("guides");
+  return guides.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+interface Props {
+  entry: CollectionEntry<"guides">;
+}
+const { entry } = Astro.props;
+const g = entry.data;
+const { Content } = await render(entry);
+const checked = g.lastChecked.toLocaleDateString("en-CA", { year: "numeric", month: "long", day: "numeric", timeZone: "UTC" });
+const showSnowForm = entry.id === "snow-help" && site.snowFormId !== "REPLACE";
+---
+
+<BaseLayout title={g.title} description={g.description}>
+  <article class="section">
+    <div class="container">
+      <div class="prose guide">
+        <p class="eyebrow">Free guide</p>
+        <h1>{g.heading}</h1>
+        <p class="lead">{g.intro}</p>
+
+        <div class="callout" role="note">
+          <p>
+            <strong>Information checked on {checked}.</strong> Programs, fees and deadlines change. Please confirm with the
+            organization before relying on it.
+          </p>
+        </div>
+
+        <div class="callout callout-alert" role="note">
+          <p><strong>If someone is in immediate danger, call 911.</strong></p>
+        </div>
+
+        <Content />
+
+        {
+          showSnowForm && (
+            <section aria-labelledby="snow-form-heading" class="snow-form">
+              <h2 id="snow-form-heading">Find your snow help in one minute</h2>
+              <p>
+                Answer a few quick questions and the form will show you who to call. It doesn't ask for your name or address, and we don't
+                follow up or arrange anything.
+              </p>
+              <TallyEmbed formId={site.snowFormId} title="Find your snow help" minHeight={500} />
+            </section>
+          )
+        }
+
+        <p class="small muted checked-footer">
+          Information checked on {checked}. Please confirm with the organization before relying on it. Family Wayfinder is
+          independent and is not affiliated with any organization named here.
+        </p>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .eyebrow {
+    font-weight: 700;
+    color: var(--harbour);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    font-size: var(--step--1);
+    margin-bottom: var(--space-1);
+  }
+  .guide .callout { margin-block: var(--space-2); }
+  .guide :global(h2) { margin-top: var(--space-5); }
+  .guide :global(h3) { margin-top: var(--space-4); }
+  .guide :global(.program) {
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: var(--space-3);
+    margin-block: var(--space-3);
+  }
+  .guide :global(.program > :first-child) { margin-top: 0; }
+  .guide :global(.program > :last-child) { margin-bottom: 0; }
+  .guide :global(.status) {
+    display: inline-block;
+    font-weight: 700;
+    padding: 0.15rem 0.6rem;
+    border-radius: var(--radius);
+    background: var(--sand);
+  }
+  .guide :global(.status-open) { background: var(--mist); color: var(--harbour-deep); }
+  .snow-form { margin-top: var(--space-5); }
+  .checked-footer { margin-top: var(--space-5); padding-top: var(--space-2); border-top: 1px solid var(--line); }
+</style>
